@@ -1,0 +1,6 @@
+
+# install deps
+bundle update
+
+# run local serve
+bundle exec jekyll serve --trace
