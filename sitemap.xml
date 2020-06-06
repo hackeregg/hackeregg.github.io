@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://hackeregg.github.io/python/analytics/flask/postgres/redirection/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html</loc>
+<loc>http://localhost:4000/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html</loc>
 <lastmod>2020-06-03T20:45:48+05:30</lastmod>
 </url>
 <url>
-<loc>https://hackeregg.github.io/About/</loc>
+<loc>http://localhost:4000/About/</loc>
 </url>
 <url>
-<loc>https://hackeregg.github.io/</loc>
+<loc>http://localhost:4000/</loc>
 </url>
 </urlset>
