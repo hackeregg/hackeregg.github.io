@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>about us | HackeEgg</title>
+<!-- begin _includes/seo.html --><title>About Us | HackeEgg</title>
 <meta name="description" content="Group of Hackers ">
 
 
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="HackeEgg">
-<meta property="og:title" content="about us">
+<meta property="og:title" content="About Us">
 <meta property="og:url" content="http://localhost:4000/About/">
 
 
@@ -124,6 +124,13 @@
               <a href="/About/">About</a>
             </li></ul>
         
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
         <button class="greedy-nav__toggle hidden" type="button">
           <span class="visually-hidden">Toggle menu</span>
           <div class="navicon"></div>
@@ -157,7 +164,7 @@
         <span class="sep">/</span>
       
       
-        <li class="current">about us</li>
+        <li class="current">About Us</li>
       
     
   </ol>
@@ -171,7 +178,7 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="about us">
+    <meta itemprop="headline" content="About Us">
     <meta itemprop="description" content="Group of Hackers">
     
     
@@ -179,7 +186,7 @@
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">about us
+          <h1 id="page-title" class="page__title" itemprop="headline">About Us
 </h1>
           
         </header>
@@ -195,7 +202,7 @@
 <p>Articles in this site are written by us to further communicate our learning, understanding and implementing different areas on Computer Science.</p>
 
 <h4 id="dipkumar-patel"><a href="https://immortal3.github.io">Dipkumar Patel</a></h4>
-<h4 id="yash-panchal"><a href="">Yash Panchal</a></h4>
+<h4 id="yash-panchal"><a href="https://www.linkedin.com/in/panchalyash13/">Yash Panchal</a></h4>
 
 
         
@@ -224,6 +231,17 @@
     </div>
 
     
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
 
     <div id="footer" class="page__footer">
       <footer>
@@ -234,6 +252,12 @@
   <ul class="social-icons">
     
 
+    
+      
+        
+          <li><a href="http://github.com/hackeregg/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
     
 
     <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
@@ -251,6 +275,10 @@
 
 
 
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
 
 
 

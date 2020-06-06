@@ -1,0 +1,593 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Implementing a Simple Redirection Analytics with a touch of Data Science | HackeEgg</title>
+<meta name="description" content="Introduction ">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="HackeEgg">
+<meta property="og:title" content="Implementing a Simple Redirection Analytics with a touch of Data Science">
+<meta property="og:url" content="http://localhost:4000/python/analytics/flask/postgres/redirection/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html">
+
+
+  <meta property="og:description" content="Introduction ">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/redirection.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-06-03T20:45:48+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/python/analytics/flask/postgres/redirection/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="HackeEgg Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          HackeEgg
+          <span class="site-subtitle"></span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/About/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(84, 50, 168, 0.9), rgba(84, 50, 168, 0.9)), url('/assets/images/redirection.jpg');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Implementing a Simple Redirection Analytics with a touch of Data Science
+
+        
+      </h1>
+      
+      
+        <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+</p>
+      
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/python" itemprop="item"><span itemprop="name">Python</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/analytics" itemprop="item"><span itemprop="name">Analytics</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/flask" itemprop="item"><span itemprop="name">Flask</span></a>
+          <meta itemprop="position" content="4" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/postgres" itemprop="item"><span itemprop="name">Postgres</span></a>
+          <meta itemprop="position" content="5" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/redirection" itemprop="item"><span itemprop="name">Redirection</span></a>
+          <meta itemprop="position" content="6" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/2020" itemprop="item"><span itemprop="name">2020</span></a>
+          <meta itemprop="position" content="7" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/06" itemprop="item"><span itemprop="name">06</span></a>
+          <meta itemprop="position" content="8" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/03" itemprop="item"><span itemprop="name">03</span></a>
+          <meta itemprop="position" content="9" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Implementing a Simple Redirection Analytics with a touch of Data Science</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Implementing a Simple Redirection Analytics with a touch of Data Science">
+    <meta itemprop="description" content="Introduction">
+    <meta itemprop="datePublished" content="2020-06-03T20:45:48+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#redirection-implementation-in-flask">Redirection Implementation in Flask</a></li>
+  <li><a href="#storing-data-to-database">Storing Data to Database</a></li>
+  <li><a href="#analytics">Analytics</a></li>
+  <li><a href="#optimization">Optimization:</a></li>
+</ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="introduction">Introduction</h2>
+
+<p>We are aiming at building a simple redirection analytics system similar to that of bit.ly and shorturl using opensource toolset with further discussion on the scope of data science in it.</p>
+
+<p>Let us take an example of a simple food review website where users can review dishes, order food through a food ordering platform (such as Uber eats, Zomato, Swiggy) via redirection from the review website to the food ordering platform. For the redirection, we simply embed the URL with the relevant link and integrate it into our website. Now, We want to check how many users clicked on that link. We can do this by adding a URL shortener or redirection service [ <a href="https://bitly.com/">https://bitly.com/</a>, <a href="https://www.shorturl.at/">https://www.shorturl.at/</a> ]. This process can be manual and costly. Many features of user statistics are paid by this service. Although they give much-needed statistics for free.</p>
+
+<blockquote>
+  <p>One of the real-world examples of this feature is Twitter. When the user includes URL into his/her tweet it gets automatically replaced by a short URL (t.co/…”) and the user can see how many people clicked on that link. Even LinkedIn does this, too.</p>
+</blockquote>
+
+<p>Here, we will mention the simplest way to implement this feature in Flask. Note, one can use a Database in place of CSV for storing the dishes and their respective URLs,  But for demonstration purposes, we’ll use CSV. Following is the format of the CSV :</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dishname</th>
+      <th>Restaurant</th>
+      <th>Platform</th>
+      <th>URL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Pizza</td>
+      <td>Uncle John’s</td>
+      <td>Zomato</td>
+      <td>zomota.com/something</td>
+    </tr>
+    <tr>
+      <td>Pasta</td>
+      <td>Uncle Bob’s</td>
+      <td>Uber Eats</td>
+      <td>ubereats.com/something</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We will use pandas for reading CSV. ( Note: we can use the CSV library of python standard package, too. But We will need some functionality to search for URLs. We can implement them as we like but for now, pandas provide an easy way to do this.)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"database.csv"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="redirection-implementation-in-flask">Redirection Implementation in Flask</h2>
+
+<p>First, let’s take a look at the following code for redirection implementation.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/redirect/&lt;restaurant&gt;/&lt;dish&gt;/&lt;platform&gt;'</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">redirect_stat</span><span class="p">(</span><span class="n">dish</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">restaurant</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">platform</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+    <span class="n">url_redirect</span> <span class="o">=</span> <span class="s">'/'</span>
+    <span class="k">if</span> <span class="n">dish</span> <span class="ow">and</span> <span class="n">restaurant</span> <span class="ow">and</span> <span class="n">platform</span><span class="p">:</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">f'dishname=="</span><span class="si">{</span><span class="n">dish</span><span class="si">}</span><span class="s">" &amp; restaurant=="</span><span class="si">{</span><span class="n">restaurant</span><span class="si">}</span><span class="s">" '</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">platform</span><span class="o">==</span><span class="s">'zomato'</span> <span class="ow">or</span> <span class="n">platform</span><span class="o">==</span><span class="s">'swiggy'</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">'url_'</span><span class="o">+</span><span class="n">platform</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_redirect</span><span class="p">,</span><span class="n">code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>As we can see, We have defined a simple URL routing scheme in Flask for redirection. If someone wants to order X dish from Y restaurant on the Z platform, they have to just type the following URL in their browser “ourwebsite.com/redirect/X/Y/Z” and we will redirect them to the relevant url. Code also does a few additional checks making sure that all arguments are passed correctly and only supported platforms are allowed for redirection.</p>
+
+<p>Now, We need to replace all URLs on our website with this routing scheme. Depending upon how we have implemented our website this can take from minutes to days.</p>
+
+<h2 id="storing-data-to-database">Storing Data to Database</h2>
+
+<p>For capturing our data, We need to store it somewhere. CSV? Yes, We can. But. multiple threads writing to CSV doesn’t end up well in the long run. So, We’ll use a real database. MongoDB? No, It’s PostgreSQL. We will create a simple table for storing our information.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="k">public</span><span class="p">.</span><span class="n">REDIRECTS</span>
+                                            <span class="p">(</span><span class="n">IP</span> <span class="nb">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+                                            <span class="n">DISH_NAME</span>  <span class="nb">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+                                            <span class="n">RESTAURANT</span> <span class="nb">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+                                            <span class="n">DATE_TIME</span> <span class="nb">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+                                            <span class="n">PLATFORM</span> <span class="nb">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>We can create table using python.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="bp">self</span><span class="p">.</span><span class="n">conn</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># read connection parameters
+</span>            <span class="n">params</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="p">)</span>
+            <span class="c1"># connect to the PostgreSQL server
+</span>            <span class="k">print</span><span class="p">(</span><span class="s">'Connecting to the PostgreSQL database...'</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">create_database</span><span class="p">:</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">conn</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+                <span class="n">database_create_query</span> <span class="o">=</span> <span class="s">'''CREATE TABLE IF NOT EXISTS public.REDIRECTS
+                                            (IP TEXT NOT NULL,
+                                            DISH_NAME  TEXT NOT NULL,
+                                            RESTAURANT TEXT NOT NULL,
+                                            DATE_TIME TEXT NOT NULL,
+                                            PLATFORM TEXT NOT NULL); '''</span>
+                <span class="n">cur</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">database_create_query</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">cur</span><span class="p">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">conn</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="n">cur</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">print</span> <span class="p">(</span><span class="s">'Connected'</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="nb">Exception</span><span class="p">,</span> <span class="n">psycopg2</span><span class="p">.</span><span class="n">DatabaseError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now, we have a table in place. We just need to insert data and everything is almost done. Following code implements insertion in the database.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/redirect/&lt;restaurant&gt;/&lt;dish&gt;/&lt;platform&gt;'</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">redirect_stat</span><span class="p">(</span><span class="n">dish</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">restaurant</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">platform</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+    <span class="n">url_redirect</span> <span class="o">=</span> <span class="s">'/'</span>
+    <span class="k">if</span> <span class="n">dish</span> <span class="ow">and</span> <span class="n">restaurant</span> <span class="ow">and</span> <span class="n">platform</span><span class="p">:</span>
+        <span class="n">redirectdb</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="n">request</span><span class="p">.</span><span class="n">remote_addr</span><span class="p">,</span><span class="n">datetime</span><span class="o">=</span><span class="n">current_time</span><span class="p">(),</span> 
+                    <span class="n">dish</span><span class="o">=</span><span class="n">dish</span><span class="p">,</span> <span class="n">restaurant</span><span class="o">=</span><span class="n">restaurant</span><span class="p">,</span> <span class="n">platform</span><span class="o">=</span><span class="n">platform</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">f'dishname=="</span><span class="si">{</span><span class="n">dish</span><span class="si">}</span><span class="s">" &amp; restaurant=="</span><span class="si">{</span><span class="n">restaurant</span><span class="si">}</span><span class="s">" '</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">platform</span><span class="o">==</span><span class="s">'zomato'</span> <span class="ow">or</span> <span class="n">platform</span><span class="o">==</span><span class="s">'swiggy'</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">'url_'</span><span class="o">+</span><span class="n">platform</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_redirect</span><span class="p">,</span><span class="n">code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="analytics">Analytics</h2>
+
+<p>At this point, we have data in our Postgres. We can do so many things with this simple data. We might need to do ETL depending upon what we trying to do with this data but I will put a few ideas for you to try out.</p>
+<ol>
+  <li>
+    <p>How many total redirections from our website happened last month?</p>
+
+    <p>Note we can not accurately calculate number of people who were redirected because many people might be using VPNs. But, We can roughly estimate using counting unique IPs. It might have an error in it but we can still benefit from it.</p>
+  </li>
+  <li>Which platform is popular?</li>
+  <li>
+    <p>Which dishes are popular and which restaurants are popular?</p>
+
+    <p>If we have additional information about restaurants in our database. For example, location of every restaurant, we can even tell which restaurant are popular in X city?</p>
+  </li>
+</ol>
+
+<p>Here, I have used popular word or similar because We never know redirected user placed an order on the platform or not. So, We should refrain from making such claims.</p>
+
+<blockquote>
+  <p>Few words on privacy: We implemented all this ability without using a third-party tool. Our website users’ data is at our hands. We can even drop the IP column form our table and only track general statistics that we only need. This is the best way to maintain our user’s privacy rather than spending a few bucks on custom analytics tools that we don’t have full control of.</p>
+</blockquote>
+
+<p>At this point, You have gotten the idea of how much powerful one simple table can be. But, If you’re coming from the Machine learning or Data Science domain such as me, I will give even more eccentric ideas. You should only try to implement this if you have at least more than X amount of daily active users on your website. If not, better invest time to implement other features.</p>
+
+<ol>
+  <li>
+    <p>Based on Data, Predicting URL redirection for a particular restaurant for the upcoming day?</p>
+
+    <p>Yes, You read this right. We can do this using time series and enough data.</p>
+  </li>
+  <li>Based on IP addresses, We can generate location-based statistics.</li>
+  <li>
+    <p>Detecting bots IP address, if any, from redirection patterns.</p>
+
+    <p>Bots have unique patterns. Sometimes they try to emulate person but no user will do 50 URL redirection on our website in one day. It can happen in rare case but we can look at general statistics from our record to determine this.</p>
+  </li>
+</ol>
+
+<h2 id="optimization">Optimization:</h2>
+
+<p>If you have seen a real-world production system. You will already have figured it our how to optimize this approach. I will just mention a few points here.</p>
+<ol>
+  <li>We can tighten our attributes of the table in the scheme. Use Datetime for storing DateTime stamp rather than text. For IP address, You can follow this post on stack overflow, https://stackoverflow.com/questions/2542011/most-efficient-way-to-store-ip-address-in-mysql</li>
+  <li>Write heavy system. Our Database might face issue if we have X amount of user redirecting every second. We can scale this because We don’t need strong consistency. Yay! 
+We can deal with eventual consistency. Also, We are not reading from the database at all. We just occasionally read from DB for our analytics purpose. The simplest and must option is batching our writes. You can read more on this topic and it deserves a blog in itself.</li>
+  <li>We are searching every time for redirect URL in CSV. We can speed up this by using a hashmap. We can even use Redis or Memcache. If we have many URLs, we will not be using CSV but a real database. For a large scale, indexes in DB + single in-memory cache instance (Redis/Memcache) is more than enough to scale to at-least million.</li>
+</ol>
+
+<p><em>Article written by Dipkumar Patel and Yash Panchal. Check out About Page.</em></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-06-03T20:45:48+05:30">June 3, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Implementing+a+Simple+Redirection+Analytics+with+a+touch+of+Data+Science%20http%3A%2F%2Flocalhost%3A4000%2Fpython%2Fanalytics%2Fflask%2Fpostgres%2Fredirection%2F2020%2F06%2F03%2FImplementing-a-Simple-Redirection-Analytics.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fpython%2Fanalytics%2Fflask%2Fpostgres%2Fredirection%2F2020%2F06%2F03%2FImplementing-a-Simple-Redirection-Analytics.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fpython%2Fanalytics%2Fflask%2Fpostgres%2Fredirection%2F2020%2F06%2F03%2FImplementing-a-Simple-Redirection-Analytics.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="http://github.com/hackeregg/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 HackeEgg. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>
