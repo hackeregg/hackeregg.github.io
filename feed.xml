@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-06-06T12:04:13+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">HackeEgg</title><subtitle>Learning, Understanding and Implementing Computer Science</subtitle><entry><title type="html">Implementing a Simple Redirection Analytics with a touch of Data Science</title><link href="http://localhost:4000/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html" rel="alternate" type="text/html" title="Implementing a Simple Redirection Analytics with a touch of Data Science" /><published>2020-06-03T20:45:48+05:30</published><updated>2020-06-03T20:45:48+05:30</updated><id>http://localhost:4000/2020/06/03/Implementing-a-Simple-Redirection-Analytics</id><content type="html" xml:base="http://localhost:4000/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.0">Jekyll</generator><link href="https://hackeregg.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hackeregg.github.io/" rel="alternate" type="text/html" /><updated>2020-06-10T10:11:00+05:30</updated><id>https://hackeregg.github.io/feed.xml</id><title type="html">HackerEgg</title><subtitle>Learning, Understanding and Implementing Computer Science</subtitle><entry><title type="html">Implementing a Simple Redirection Analytics with a touch of Data Science</title><link href="https://hackeregg.github.io/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html" rel="alternate" type="text/html" title="Implementing a Simple Redirection Analytics with a touch of Data Science" /><published>2020-06-03T20:45:48+05:30</published><updated>2020-06-03T20:45:48+05:30</updated><id>https://hackeregg.github.io/2020/06/03/Implementing-a-Simple-Redirection-Analytics</id><content type="html" xml:base="https://hackeregg.github.io/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;We are aiming at building a simple redirection analytics system similar to that of bit.ly and shorturl using opensource toolset with further discussion on the scope of data science in it.&lt;/p&gt;
 
@@ -155,7 +155,7 @@
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&quot;optimization&quot;&gt;Optimization:&lt;/h2&gt;
+&lt;h2 id=&quot;optimization&quot;&gt;Optimization&lt;/h2&gt;
 
 &lt;p&gt;If you have seen a real-world production system. You will already have figured it our how to optimize this approach. I will just mention a few points here.&lt;/p&gt;
 &lt;ol&gt;

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://localhost:4000/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html</loc>
+<loc>https://hackeregg.github.io/2020/06/03/Implementing-a-Simple-Redirection-Analytics.html</loc>
 <lastmod>2020-06-03T20:45:48+05:30</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/About/</loc>
+<loc>https://hackeregg.github.io/About/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/</loc>
+<loc>https://hackeregg.github.io/</loc>
 </url>
 </urlset>
