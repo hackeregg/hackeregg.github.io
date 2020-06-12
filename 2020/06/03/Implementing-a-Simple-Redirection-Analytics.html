@@ -325,10 +325,8 @@
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/redirect/&lt;restaurant&gt;/&lt;dish&gt;/&lt;platform&gt;'</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">redirect_stat</span><span class="p">(</span><span class="n">dish</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">restaurant</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">platform</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-
     <span class="n">url_redirect</span> <span class="o">=</span> <span class="s">'/'</span>
     <span class="k">if</span> <span class="n">dish</span> <span class="ow">and</span> <span class="n">restaurant</span> <span class="ow">and</span> <span class="n">platform</span><span class="p">:</span>
-
         <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">f'dishname=="</span><span class="si">{</span><span class="n">dish</span><span class="si">}</span><span class="s">" &amp; restaurant=="</span><span class="si">{</span><span class="n">restaurant</span><span class="si">}</span><span class="s">" '</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">platform</span><span class="o">==</span><span class="s">'zomato'</span> <span class="ow">or</span> <span class="n">platform</span><span class="o">==</span><span class="s">'swiggy'</span><span class="p">:</span>
@@ -355,39 +353,38 @@
 <p>We can create table using python.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="bp">self</span><span class="p">.</span><span class="n">conn</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># read connection parameters
-</span>            <span class="n">params</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="p">)</span>
-            <span class="c1"># connect to the PostgreSQL server
-</span>            <span class="k">print</span><span class="p">(</span><span class="s">'Connecting to the PostgreSQL database...'</span><span class="p">)</span>
-            <span class="bp">self</span><span class="p">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">create_database</span><span class="p">:</span>
-                <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">conn</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
-                <span class="n">database_create_query</span> <span class="o">=</span> <span class="s">'''CREATE TABLE IF NOT EXISTS public.REDIRECTS
-                                            (IP TEXT NOT NULL,
-                                            DISH_NAME  TEXT NOT NULL,
-                                            RESTAURANT TEXT NOT NULL,
-                                            DATE_TIME TEXT NOT NULL,
-                                            PLATFORM TEXT NOT NULL); '''</span>
-                <span class="n">cur</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">database_create_query</span><span class="p">)</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">cur</span><span class="p">.</span><span class="n">fetchall</span><span class="p">()</span>
-                <span class="bp">self</span><span class="p">.</span><span class="n">conn</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
-                <span class="n">cur</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="k">print</span> <span class="p">(</span><span class="s">'Connected'</span><span class="p">)</span>
-        <span class="k">except</span> <span class="p">(</span><span class="nb">Exception</span><span class="p">,</span> <span class="n">psycopg2</span><span class="p">.</span><span class="n">DatabaseError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># read connection parameters
+</span>    <span class="n">params</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="p">)</span>
+    <span class="c1"># connect to the PostgreSQL server
+</span>    <span class="k">print</span><span class="p">(</span><span class="s">'Connecting to the PostgreSQL database...'</span><span class="p">)</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">create_database</span><span class="p">:</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">conn</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">database_create_query</span> <span class="o">=</span> <span class="s">'''CREATE TABLE IF NOT EXISTS public.REDIRECTS
+                                    (IP TEXT NOT NULL,
+                                    DISH_NAME  TEXT NOT NULL,
+                                    RESTAURANT TEXT NOT NULL,
+                                    DATE_TIME TEXT NOT NULL,
+                                    PLATFORM TEXT NOT NULL); '''</span>
+        <span class="n">cur</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">database_create_query</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cur</span><span class="p">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">conn</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">cur</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">'Connected'</span><span class="p">)</span>
+<span class="k">except</span> <span class="p">(</span><span class="nb">Exception</span><span class="p">,</span> <span class="n">psycopg2</span><span class="p">.</span><span class="n">DatabaseError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>Now, we have a table in place. We just need to insert data and everything is almost done. Following code implements insertion in the database.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/redirect/&lt;restaurant&gt;/&lt;dish&gt;/&lt;platform&gt;'</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">redirect_stat</span><span class="p">(</span><span class="n">dish</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">restaurant</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">platform</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-
     <span class="n">url_redirect</span> <span class="o">=</span> <span class="s">'/'</span>
     <span class="k">if</span> <span class="n">dish</span> <span class="ow">and</span> <span class="n">restaurant</span> <span class="ow">and</span> <span class="n">platform</span><span class="p">:</span>
-        <span class="n">redirectdb</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="n">request</span><span class="p">.</span><span class="n">remote_addr</span><span class="p">,</span><span class="n">datetime</span><span class="o">=</span><span class="n">current_time</span><span class="p">(),</span> 
+        <span class="c1"># inserting entry into database
+</span>        <span class="n">redirectdb</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="n">request</span><span class="p">.</span><span class="n">remote_addr</span><span class="p">,</span><span class="n">datetime</span><span class="o">=</span><span class="n">current_time</span><span class="p">(),</span> 
                     <span class="n">dish</span><span class="o">=</span><span class="n">dish</span><span class="p">,</span> <span class="n">restaurant</span><span class="o">=</span><span class="n">restaurant</span><span class="p">,</span> <span class="n">platform</span><span class="o">=</span><span class="n">platform</span><span class="p">)</span>
-
         <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">f'dishname=="</span><span class="si">{</span><span class="n">dish</span><span class="si">}</span><span class="s">" &amp; restaurant=="</span><span class="si">{</span><span class="n">restaurant</span><span class="si">}</span><span class="s">" '</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">platform</span><span class="o">==</span><span class="s">'zomato'</span> <span class="ow">or</span> <span class="n">platform</span><span class="o">==</span><span class="s">'swiggy'</span><span class="p">:</span>
@@ -444,7 +441,7 @@ We can deal with eventual consistency. Also, We are not reading from the databas
   <li>We are searching every time for redirect URL in CSV. We can speed up this by using a hashmap. We can even use Redis or Memcache. If we have many URLs, we will not be using CSV but a real database. For a large scale, indexes in DB + single in-memory cache instance (Redis/Memcache) is more than enough to scale to at-least million.</li>
 </ol>
 
-<p><em>Article written by Dipkumar Patel and Yash Panchal. Check out About Page.</em></p>
+<p><strong>written by Dipkumar Patel and Yash Panchal</strong></p>
 
 
         
