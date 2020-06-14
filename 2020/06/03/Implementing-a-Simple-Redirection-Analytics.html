@@ -279,15 +279,23 @@
         
         <h2 id="introduction">Introduction</h2>
 
-<p>We are aiming at building a simple redirection analytics system similar to that of bit.ly and shorturl using opensource toolset with further discussion on the scope of data science in it.</p>
+<p>We are aiming to build a simple redirection analytics system similar to bit.ly / shorturl using opensource toolset with further investigation on the scope of data science in it.</p>
 
-<p>Let us take an example of a simple food review website where users can review dishes, order food through a food ordering platform (such as Uber eats, Zomato, Swiggy) via redirection from the review website to the food ordering platform. For the redirection, we simply embed the URL with the relevant link and integrate it into our website. Now, We want to check how many users clicked on that link. We can do this by adding a URL shortener or redirection service [ <a href="https://bitly.com/">https://bitly.com/</a>, <a href="https://www.shorturl.at/">https://www.shorturl.at/</a> ]. This process can be manual and costly. Many features of user statistics are paid by this service. Although they give much-needed statistics for free.</p>
+<p>Let take an example of a simple food review website. On the Website, users can see reviews of different dishes. If Users like a review of a particular dish and want to order it, the Website contains links to various food ordering platforms (such as Uber eats, Zomato, Swiggy). Users can click on one of the platforms and it will be redirected to the chosen platform with desired dish.</p>
+
+<p>For the redirection, we simply embed the URL with the relevant link and integrate it into our website.</p>
+
+<p>Now, We want to check how many users clicked on that link. We can do this by adding a URL shortener or redirection service [ <a href="https://bitly.com/">https://bitly.com/</a>, <a href="https://www.shorturl.at/">https://www.shorturl.at/</a> ]. This process can be manual and costly. Many statistics of redirection are generally paid. Although, most of the services give much-needed statistics for free.</p>
 
 <blockquote>
-  <p>One of the real-world examples of this feature is Twitter. When the user includes URL into his/her tweet it gets automatically replaced by a short URL (t.co/…”) and the user can see how many people clicked on that link. Even LinkedIn does this, too.</p>
+  <p>One of the real-world examples of this feature is Twitter. When the user includes URL into his/her tweet it gets automatically replaced by a short URL (t.co/…”) and the user can see how many people clicked on that link. Even LinkedIn does this.</p>
 </blockquote>
 
-<p>Here, we will mention the simplest way to implement this feature in Flask. Note, one can use a Database in place of CSV for storing the dishes and their respective URLs,  But for demonstration purposes, we’ll use CSV. Following is the format of the CSV :</p>
+<p>Here, we will mention the simplest way to implement this feature in Flask.</p>
+
+<p><strong>Simplest doesn’t mean best.</strong></p>
+
+<p>We will need to store all relevant links to all dishes with all supported platforms. We might store this in one big database table. But here, we will use CSV in place of the database for storing the dishes and their respective URLs. Following is the format of the CSV :</p>
 
 <table>
   <thead>
@@ -314,14 +322,14 @@
   </tbody>
 </table>
 
-<p>We will use pandas for reading CSV. ( Note: we can use the CSV library of python standard package, too. But We will need some functionality to search for URLs. We can implement them as we like but for now, pandas provide an easy way to do this.)</p>
+<p>We will use pandas for reading CSV. ( Note: we can use the CSV library of python standard package, too. But We will need some functionality to search for URLs. We can implement this search functionality easily with pandas)</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"database.csv"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <h2 id="redirection-implementation-in-flask">Redirection Implementation in Flask</h2>
 
-<p>First, let’s take a look at the following code for redirection implementation.</p>
+<p>Now, We have redirection urls. Let’s take a look at the following code for redirection implementation.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/redirect/&lt;restaurant&gt;/&lt;dish&gt;/&lt;platform&gt;'</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">redirect_stat</span><span class="p">(</span><span class="n">dish</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">restaurant</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">platform</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -334,13 +342,13 @@
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_redirect</span><span class="p">,</span><span class="n">code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>As we can see, We have defined a simple URL routing scheme in Flask for redirection. If someone wants to order X dish from Y restaurant on the Z platform, they have to just type the following URL in their browser “ourwebsite.com/redirect/X/Y/Z” and we will redirect them to the relevant url. Code also does a few additional checks making sure that all arguments are passed correctly and only supported platforms are allowed for redirection.</p>
+<p>As we can see, We have defined a very simple URL routing scheme in Flask for redirection. If someone wants to order X dish from Y restaurant on the Z platform, they have to just type the following URL in their browser “ourwebsite.com/redirect/X/Y/Z” and we will redirect them to the relevant platform with that dish. Code also does a few additional checks making sure that all arguments are passed correctly and only supported platforms are allowed for redirection.</p>
 
-<p>Now, We need to replace all URLs on our website with this routing scheme. Depending upon how we have implemented our website this can take from minutes to days.</p>
+<p>Now, We need to replace all URLs on our website with this routing scheme. Depending upon how we have implemented this on our website this can take from couple of minutes to a week.</p>
 
 <h2 id="storing-data-to-database">Storing Data to Database</h2>
 
-<p>For capturing our data, We need to store it somewhere. CSV? Yes, We can. But. multiple threads writing to CSV doesn’t end up well in the long run. So, We’ll use a real database. MongoDB? No, It’s PostgreSQL. We will create a simple table for storing our information.</p>
+<p>We need to store redirection entries. CSV? Yes, We can. But. multiple threads writing to single CSV doesn’t end up well in the long run. So, We’ll use a real database. MongoDB? No, It’s PostgreSQL. We will create a simple table for storing our information.</p>
 
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="k">public</span><span class="p">.</span><span class="n">REDIRECTS</span>
                                             <span class="p">(</span><span class="n">IP</span> <span class="nb">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
@@ -350,7 +358,7 @@
                                             <span class="n">PLATFORM</span> <span class="nb">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">);</span>
 </code></pre></div></div>
 
-<p>We can create table using python.</p>
+<p>We also can create table using python.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="bp">self</span><span class="p">.</span><span class="n">conn</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="k">try</span><span class="p">:</span>
@@ -394,12 +402,12 @@
 
 <h2 id="analytics">Analytics</h2>
 
-<p>At this point, we have data in our Postgres. We can do so many things with this simple data. We might need to do ETL depending upon what we trying to do with this data but I will put a few ideas for you to try out.</p>
+<p>At this point, we have data in our Postgres. We can do so many things with this just one simple table. We might need to do ETL depending upon what we trying to do with this data but I will put a few ideas for you to try out.</p>
 <ol>
   <li>
     <p>How many total redirections from our website happened last month?</p>
 
-    <p>Note we can not accurately calculate number of people who were redirected because many people might be using VPNs. But, We can roughly estimate using counting unique IPs. It might have an error in it but we can still benefit from it.</p>
+    <p>Note we can not accurately calculate number of people who were redirected because many people might be using VPNs. But, We can roughly estimate this by counting unique IPs. It might have an error in it but we can still benefit from it.</p>
   </li>
   <li>Which platform is popular?</li>
   <li>
@@ -409,36 +417,36 @@
   </li>
 </ol>
 
-<p>Here, I have used popular word or similar because We never know redirected user placed an order on the platform or not. So, We should refrain from making such claims.</p>
+<p>Here, I have used popular word because We never know redirected user placed an order on the platform or not. So, We should refrain from making such claims.</p>
 
 <blockquote>
-  <p>Few words on privacy: We implemented all this ability without using a third-party tool. Our website users’ data is at our hands. We can even drop the IP column form our table and only track general statistics that we only need. This is the best way to maintain our user’s privacy rather than spending a few bucks on custom analytics tools that we don’t have full control of.</p>
+  <p>Few words on privacy: We implemented all this without using a single third-party tool. Our website users’ data is at our hands. We can even drop the IP column form our table and only track general statistics. This is the best way to maintain our user’s privacy rather than spending a few bucks on custom analytics tools that we don’t have full control of.</p>
 </blockquote>
 
-<p>At this point, You have gotten the idea of how much powerful one simple table can be. But, If you’re coming from the Machine learning or Data Science domain such as me, I will give even more eccentric ideas. You should only try to implement this if you have at least more than X amount of daily active users on your website. If not, better invest time to implement other features.</p>
+<p>At this point, You have gotten the idea of how much powerful one simple table can be. But, If you’re coming from the Machine learning or Data Science domain, There are few eccentric ideas. You should only try to implement this if you have at least more than X amount of daily active users on your website. If not, better invest time to implement other important features.</p>
 
 <ol>
   <li>
-    <p>Based on Data, Predicting URL redirection for a particular restaurant for the upcoming day?</p>
+    <p>Based on Data, Predicting URL redirection for a particular restaurant for the upcoming day.</p>
 
-    <p>Yes, You read this right. We can do this using time series and enough data.</p>
+    <p>Yes, You read this right. We can do this using time series analysis and enough data.</p>
   </li>
   <li>Based on IP addresses, We can generate location-based statistics.</li>
   <li>
-    <p>Detecting bots IP address, if any, from redirection patterns.</p>
+    <p>Detecting bots’ IP address, if any exists on our platform, from redirection patterns.</p>
 
-    <p>Bots have unique patterns. Sometimes they try to emulate person but no user will do 50 URL redirection on our website in one day. It can happen in rare case but we can look at general statistics from our record to determine this.</p>
+    <p>Bots have unique patterns. Sometimes they try to emulate person but no user will do 50 URL redirection on our website in one day. It can happen in rare case but we can look at general statistics from our records to determine this behaviour.</p>
   </li>
 </ol>
 
 <h2 id="optimization">Optimization</h2>
 
-<p>If you have seen a real-world production system. You will already have figured it our how to optimize this approach. I will just mention a few points here.</p>
+<p>If you have seen a real-world production system. You might already have figured it out that how to optimize this approach. I will just mention a few points here.</p>
 <ol>
-  <li>We can tighten our attributes of the table in the scheme. Use Datetime for storing DateTime stamp rather than text. For IP address, You can follow this post on stack overflow, https://stackoverflow.com/questions/2542011/most-efficient-way-to-store-ip-address-in-mysql</li>
-  <li>Write heavy system. Our Database might face issue if we have X amount of user redirecting every second. We can scale this because We don’t need strong consistency. Yay! 
-We can deal with eventual consistency. Also, We are not reading from the database at all. We just occasionally read from DB for our analytics purpose. The simplest and must option is batching our writes. You can read more on this topic and it deserves a blog in itself.</li>
-  <li>We are searching every time for redirect URL in CSV. We can speed up this by using a hashmap. We can even use Redis or Memcache. If we have many URLs, we will not be using CSV but a real database. For a large scale, indexes in DB + single in-memory cache instance (Redis/Memcache) is more than enough to scale to at-least million.</li>
+  <li>We can tighten our attributes of the table in the schema. Use Datetime for storing DateTime stamp rather than text. For IP address, You can follow this post on <a href="https://stackoverflow.com/questions/2542011/most-efficient-way-to-store-ip-address-in-mysql">stack overflow</a></li>
+  <li>We have Write heavy system. Our Database might face issue if we have X amount of user redirecting every second. We can scale this because We don’t need strong consistency. Yay! 
+We can deal with eventual consistency. Also, We are not reading from the database at all. We just occasionally read from DB for our analytics purpose. The simplest and must option is batching our writes. You can read more on optimizing DB for write heavy task. This topic deserves a blog in itself.</li>
+  <li>Our search time for url in CSV is linear [ O(N) ]. We can speed up this by using a hashmap. We can even use Redis or Memcache. If we have too many URLs, we will not be using CSV but a real database. For a large scale, indexes in DB + single in-memory cache instance (Redis/Memcache) is more than enough to scale to at-least to million urls.</li>
 </ol>
 
 <p><strong>written by Dipkumar Patel and Yash Panchal</strong></p>
