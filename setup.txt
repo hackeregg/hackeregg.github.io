@@ -5,6 +5,6 @@ bundle update
 # run local serve
 bundle exec jekyll serve --trace
 
-#
+# build and push to github
 bundle exec jekyll build
 cp -a _site/. ../hackeregg.github.io
