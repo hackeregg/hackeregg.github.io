@@ -1,0 +1,688 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Setup Local K8s Cluster using Vagrant | HackerEgg</title>
+<meta name="description" content="Initialize and setup k8s cluster 12 June 2023">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="HackerEgg">
+<meta property="og:title" content="Setup Local K8s Cluster using Vagrant">
+<meta property="og:url" content="https://hackeregg.github.io/2023/06/12/setup-local-k8s-cluster-using-vagrant.html">
+
+
+  <meta property="og:description" content="Initialize and setup k8s cluster 12 June 2023">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-06-12T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://hackeregg.github.io/2023/06/12/setup-local-k8s-cluster-using-vagrant.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://hackeregg.github.io/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="HackerEgg Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/favicon.png" alt="HackerEgg"></a>
+        
+        <a class="site-title" href="/">
+          HackerEgg
+          <span class="site-subtitle"></span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/About/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="https://hackeregg.github.io/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/2023" itemprop="item"><span itemprop="name">2023</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/06" itemprop="item"><span itemprop="name">06</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/12" itemprop="item"><span itemprop="name">12</span></a>
+          <meta itemprop="position" content="4" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Setup Local K8s Cluster Using Vagrant</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Setup Local K8s Cluster Using Vagrant">
+    <meta itemprop="description" content="Initialize and setup k8s cluster12 June 2023">
+    <meta itemprop="datePublished" content="2023-06-12T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Setup Local K8s Cluster Using Vagrant
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h2 id="initialize-and-setup-k8s-cluster">Initialize and setup k8s cluster</h2>
+<p>12 June 2023</p>
+
+<hr />
+
+<h2 id="steps-to-initialize-k8s-cluster"><strong><em>Steps to initialize k8s cluster</em></strong></h2>
+<hr />
+
+<ol>
+  <li>
+    <p><strong>Initialize the k8s cluster on node1</strong></p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init --apiserver-advertise-address=192.168.1.101 --pod-network-cidr=192.168.1.0/24 --v=5
+
+
+IPADDR="192.168.1.101"
+NODENAME=$(hostname -s)
+POD_CIDR="192.168.1.0/16"
+
+sudo kubeadm init --apiserver-advertise-address=$IPADDR  --apiserver-cert-extra-sans=$IPADDR  --pod-network-cidr=$POD_CIDR --node-name $NODENAME --ignore-preflight-errors Swap
+</code></pre></div>    </div>
+
+    <p>To start using your cluster, you need to run the following as a regular user:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</code></pre></div>    </div>
+
+    <p>Alternatively, if you are the root user, you can run:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export KUBECONFIG=/etc/kubernetes/admin.conf
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Setup Calico/WEAVE Net networking interface</strong></p>
+
+    <p>Use any one of the following CNI setup, I used Weavenet</p>
+
+    <p>Calico</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/manifests/calico.yaml
+</code></pre></div>    </div>
+
+    <p>Weavenet</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Join the other nodes with the node1</strong></p>
+
+    <p>Paste the output from the node 1 to join the node 1</p>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="vagrantfile-and-scripts-for-setup"><strong><em>Vagrantfile and Scripts for setup</em></strong></h2>
+<hr />
+
+<p>Ensure that the Vagrantfile and setup.sh are in the same folder.</p>
+
+<p><strong>Vagrantfile</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Vagrant.configure("2") do |config|
+  config.vm.define "db1" do |db1|
+    db1.vm.box = "ubuntu/focal64"
+    db1.vm.hostname = 'db1'
+    db1.vm.box_url = "ubuntu/focal64"
+    db1.vm.provision "shell", path: "setup-k8s.sh"
+    db1.vm.provision "shell", path: "master.sh"
+    db1.vm.network "public_network", ip: '192.168.1.101', bridge: 'enp11s0'
+    db1.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 2000]
+      v.customize ["modifyvm", :id, "--name", "db1"]
+    end
+  end
+
+  config.vm.define "db2" do |db2|
+    db2.vm.box = "ubuntu/focal64"
+    db2.vm.hostname = 'db2'
+    db2.vm.box_url = "ubuntu/focal64"
+    db2.vm.provision "shell", path: "setup-k8s.sh"
+    db2.vm.provision "shell", path: "worker.sh"
+    db2.vm.network "public_network", ip: '192.168.1.102', bridge: 'enp11s0'
+    db2.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 2000]
+      v.customize ["modifyvm", :id, "--name", "db2"]
+      
+    end
+  end
+
+  config.vm.define "db3" do |db3|
+    db3.vm.box = "ubuntu/focal64"
+    db3.vm.hostname = 'db3'
+    db3.vm.box_url = "ubuntu/focal64"
+    db3.vm.provision "shell", path: "setup-k8s.sh"
+    db3.vm.provision "shell", path: "worker.sh"
+    db3.vm.network "public_network", ip: '192.168.1.103', bridge: 'enp11s0'
+    db3.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 2000]
+      v.customize ["modifyvm", :id, "--name", "db3"]
+      
+    end
+  end
+end
+</code></pre></div></div>
+
+<p><strong>setup-k8s.sh</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+
+set +xe
+
+yes y | ssh-keygen -q -t rsa -N '' &gt;/dev/null
+
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4ns0dEv0sJV+rMDftaaTDwsj2y0hf0/vOsPepy+YJzFW4B8dgTa75bN12uexH78Xcth06MkOCiB3iOuIkoxEcQx8JMUiUCiIpNSWTTTjxu4zhx6k68Fw6eczbbBoXenNO6i7lCB1rXsd2NO4JgOEMobi6IzdkOXINV3LX5Pu3zrbxOKSeTIKnVEt3kK0/yrvCEKAg8lyGIuZ6Xh6zOLkbhQGpWDNexQa8kx4K/2QN98dNWAFktihcy1UOZJ4ha17MEsDRxyNb5lixWurv23/BpjbaiywpQbmZ+hAfS3wN2hxMSuP4pwkoCiRBvQjT7fD5jeMJ3YiYVv56VBbf0TAAcLentCowfzEdwPYyExma0J0PXmregNPlaw38KcmlSmUfXn77XRIgJ70aAcq3MscsqlKpIN7AYYbTBuDj/7ENpI8dsJarNWmeHMlfoi0mwI9izPnJim3XODdGWAZlV0CXvG2NpmzASxuKYrf8occNtyjjrD/Fn5DBHuD6PbJn8KE= yash@yash-ThinkPad-P15-Gen-2i" &gt;&gt; ~/.ssh/authorized_keys
+
+cat &lt;&lt;EOF &gt;&gt; /etc/hosts
+192.168.1.101 db1
+192.168.1.102 db2
+192.168.1.103 db3
+EOF
+sudo swapoff -a
+sudo apt-get install -y apt-transport-https 
+cat &lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+EOF
+sudo modprobe overlay
+sudo modprobe br_netfilter
+# sysctl params required by setup, params persist across reboots
+cat &lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+# Apply sysctl params without reboot
+sudo sysctl --system
+sudo apt-get update
+
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg -y
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+"$(. /etc/os-release &amp;&amp; echo "$VERSION_CODENAME")" stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+cat &lt;&lt; EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+sudo apt-get update
+sudo apt-get install -y kubelet=1.26.0-00 kubeadm=1.26.0-00 kubectl=1.26.0-00
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo rm /etc/containerd/config.toml
+#https://stackoverflow.com/questions/72504257/i-encountered-when-executing-kubeadm-init-error-issue
+sudo systemctl restart containerd
+
+apt-get install net-tools -y
+</code></pre></div></div>
+
+<p><strong>master.sh</strong> (Setup to provision and initialize control node k8s)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+    
+kubeadm init --apiserver-advertise-address=192.168.1.101 --pod-network-cidr=192.168.1.0/24 --v=5
+
+
+IPADDR="192.168.1.101"
+NODENAME=$(hostname -s)
+POD_CIDR="192.168.1.0/16"
+
+sudo kubeadm init --apiserver-advertise-address=$IPADDR  --apiserver-cert-extra-sans=$IPADDR  --pod-network-cidr=$POD_CIDR --node-name $NODENAME --ignore-preflight-errors Swap
+
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+echo "Setting up Weaveworks Network"
+
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+kubectl get nodes
+kubectl get pods --all-namespaces
+kubectl cluster-info
+
+kubeadm token create --print-join-command &gt; index.html
+
+docker run -dit -p 80:80 -v ./index.html:/usr/share/nginx/html/index.html nginx
+
+cat ~/.kube/config &gt; index-config.html
+
+docker run -dit -p 8080:80 -v ./index-config.html:/usr/share/nginx/html/index.html nginx
+</code></pre></div></div>
+
+<p><strong>worker.sh</strong> (Setup to provision the worker nodes)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+
+JOIN_COMMAND=$(curl db1:80)
+
+echo "Following is the Join Command:- $JOIN_COMMAND"
+
+$JOIN_COMMAND
+
+curl db1:8080 &gt; /etc/kubernetes/kubelet-admin.conf
+
+echo "KUBECONFIG=/etc/kubernetes/kubelet-admin.conf" &gt;&gt; /etc/environment
+
+source /etc/environment
+</code></pre></div></div>
+
+<p><strong>Start the vms and provision them using setup.sh using the following command:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vagrant up
+</code></pre></div></div>
+
+<p><strong>ssh into the vms using the following command:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vagrant ssh db1
+</code></pre></div></div>
+
+<p><strong>Note:</strong> You might need to replace <strong>wlp9s0</strong> with your own network interface along with the cidr ranges (here: 192.168.56.0/24).</p>
+
+<hr />
+
+<h2 id="executing-kubectl-commands-from-worker-nodes"><strong><em>Executing kubectl commands from worker nodes</em></strong></h2>
+
+<p>By default your kubeconfig file of control node is not present in the worker node.
+This means that you can only administer cluster from the control node.</p>
+
+<p>In order to admin the cluster from the worker nodes as well, you will need to do the following configurations:-</p>
+
+<ol>
+  <li>
+    <p>Ensure that the kubectl config file from the control plane node is copied to the worker nodes.</p>
+
+    <p>Usually preset at ~/.kube/config on controller node.</p>
+  </li>
+  <li>
+    <p>Copy the control node kube config file data and paste it in a config file at the worker node.</p>
+  </li>
+  <li>
+    <p>Set the path using export KUBECONFIG=PATH/TO/YOUR/CONFIG (Can be located anywhere)</p>
+
+    <p>In my case I override /etc/kubernetes/kubelet.conf file with the kubeconfig of the control node.</p>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="exposing-the-service-sample-nginx-application"><strong><em>Exposing the service (sample nginx application)</em></strong></h2>
+
+<ol>
+    <p>Download the sample manifest of nginx application created by nonanom.</p>
+
+    <p>curl -lo nginx.yaml “https://gist.githubusercontent.com/nonanom/498b913a69cede7037d55e28bb00344e/raw”</p>
+</ol>
+
+<p><strong>nginx.yaml</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kind: Service
+apiVersion: v1
+metadata:
+name: nginx
+labels:
+   app: nginx
+spec:
+selector:
+   app: nginx
+ports:
+- port: 80
+   protocol: TCP
+   targetPort: 80
+type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: nginx
+labels:
+   app: nginx
+spec:
+replicas: 1
+selector:
+   matchLabels:
+      app: nginx
+template:
+   metadata:
+      labels:
+      app: nginx
+   spec:
+      containers:
+      - name: nginx
+      image: nginx:latest
+      imagePullPolicy: Always
+      ports:
+      - containerPort: 80
+         protocol: TCP
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>Deploy the manifest in the cluster</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply --filename nginx.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Expose the service (Portforward the service)</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl port-forward service/nginx --address 0.0.0.0 8080:80
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p><strong>Note:</strong> the node from where you execute the command for exposing the service will be the node from which you can access the application service.</p>
+
+<p>Reference: https://nonanom.medium.com/run-nginx-on-kubernetes-ee6ea937bc99</p>
+
+<h2 id="github-repo-for-reference"><strong><em>Github repo for reference</em></strong></h2>
+
+<p>https://github.com/panchal-yash/vagrant-k8s-setup</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-06-12T00:00:00+05:30">June 12, 2023</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Setup+Local+K8s+Cluster+Using+Vagrant%20https%3A%2F%2Fhackeregg.github.io%2F2023%2F06%2F12%2Fsetup-local-k8s-cluster-using-vagrant.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhackeregg.github.io%2F2023%2F06%2F12%2Fsetup-local-k8s-cluster-using-vagrant.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fhackeregg.github.io%2F2023%2F06%2F12%2Fsetup-local-k8s-cluster-using-vagrant.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/2020/06/03/Speeding-up-function-calls-with-just-one-line-in-Python.html" class="pagination--pager" title="Speeding up function calls with just one line in Python
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="http://github.com/hackeregg/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 HackerEgg. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>
